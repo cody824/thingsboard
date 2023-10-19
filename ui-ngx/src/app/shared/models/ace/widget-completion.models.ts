@@ -215,6 +215,11 @@ export const widgetContextCompletions: TbEditorCompletions = {
               meta: 'property',
               type: 'boolean'
             },
+            enableDataExport: {
+              description: 'Whether to enable data export button on widget.',
+              meta: 'property',
+              type: 'boolean'
+            },
             useDashboardTimewindow: {
               description: 'Whether to use dashboard timewindow (applicable for timeseries widgets).',
               meta: 'property',

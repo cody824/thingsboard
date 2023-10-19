@@ -661,6 +661,8 @@ export interface WidgetConfig {
   titleTooltip?: string;
   dropShadow?: boolean;
   enableFullscreen?: boolean;
+  // 添加是否允许数据导出变量
+  enableDataExport?: boolean;
   useDashboardTimewindow?: boolean;
   displayTimewindow?: boolean;
   timewindow?: Timewindow;

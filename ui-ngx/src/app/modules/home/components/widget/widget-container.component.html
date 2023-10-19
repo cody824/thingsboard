@@ -54,6 +54,33 @@
               matTooltipPosition="above">
         <tb-icon>{{ action.icon }}</tb-icon>
       </button>
+      <!--开始 -->
+      <!--数据导出按钮实现 开始↓-->
+      <button mat-icon-button
+              [matMenuTriggerFor]="menu"
+              #menuTrigger="matMenuTrigger"
+              [fxShow]="!isEdit && widget.enableDataExport"
+              matTooltip="{{ 'widget.data-export' | translate }}"
+              matTooltipPosition="above">
+        <mat-icon>{{'archive'}}</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="exportData($event, widgetComponent.widgetContext,'csv');menuTrigger.toggleMenu();">
+          <mat-icon>insert_drive_file</mat-icon>
+          <span>{{ 'widget.data-export-csv' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="exportData($event, widgetComponent.widgetContext,'xls');menuTrigger.toggleMenu();">
+          <mat-icon>insert_drive_file</mat-icon>
+          <span>{{ 'widget.data-export-xls' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="exportData($event, widgetComponent.widgetContext,'xlsx');menuTrigger.toggleMenu();">
+          <mat-icon>insert_drive_file</mat-icon>
+          <span>{{ 'widget.data-export-xlsx' | translate }}</span>
+        </button>
+      </mat-menu>
+      <!--数据导出按钮实现 结束↑-->
+
+      <!--结束 -->
       <button mat-icon-button
               [fxShow]="!isEdit && widget.enableFullscreen"
               (click)="$event.stopPropagation(); widget.isFullscreen = !widget.isFullscreen"
