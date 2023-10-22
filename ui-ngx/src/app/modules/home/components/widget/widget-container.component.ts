@@ -40,6 +40,11 @@ import { guid, isNotEmptyStr } from '@core/utils';
 import cssjs from '@core/css/css';
 import { DOCUMENT } from '@angular/common';
 import { GridsterItemComponent } from 'angular-gridster2';
+import {WidgetContext} from "@home/models/widget-component.models";
+import {Datasource, DatasourceData} from "@shared/models/widget.models";
+import { BookType, writeFile, WorkBook, utils, WorkSheet } from 'xlsx';
+import _ from 'lodash';
+import {MatMenuTrigger} from "@angular/material/menu";
 
 export enum WidgetComponentActionType {
   MOUSE_DOWN,
@@ -109,6 +114,8 @@ export class WidgetContainerComponent extends PageComponent implements OnInit, A
 
   @Output()
   widgetComponentAction: EventEmitter<WidgetComponentAction> = new EventEmitter<WidgetComponentAction>();
+
+  @ViewChild('menuTrigger') trigger: MatMenuTrigger;
 
   private cssClass: string;
 
@@ -204,4 +211,106 @@ export class WidgetContainerComponent extends PageComponent implements OnInit, A
     });
   }
 
+  exportData($event: Event, ctx: WidgetContext, fileType) {
+    if ($event) {
+      $event.stopPropagation();
+    }
+    const export_data = this.data_format(ctx.datasources, ctx.data);
+    this.export(export_data, fileType, ctx.widgetConfig.title);
+    //下载结束关闭菜单
+    this.trigger.toggleMenu();
+  }
+
+  /**
+   * 将数据格式化为下面类似格式
+   [
+   ['name', 'type', 'timestamp', 'dataKey1','dataKey1',...],
+   ['BusA', 'Device', 1617851898356, 9.3,'on',...],
+   ['BusB', 'Device', 1617851898356, 9.3,'off',...],
+   ['AssertA', 'Assert', 1617851898356, 9.3,'location1',...],
+   ['AssertB', 'Assert', 1617851898356, 9.3,'location2',...]
+   ]
+   * @param datasources 使用console.log(datasources)查看datasources具体数据格式
+   * @param data 使用console.log(data)查看data具体数据格式
+   */
+  data_format(datasources: Datasource[], data: DatasourceData[]) {
+    let aggregation = [];
+    const header = ['timestamp', 'name', 'type'];
+    let firstHeader = true;
+    datasources.forEach(ds => {
+      let entity = [];
+      let firstTs = true;
+      ds.dataKeys.forEach(dk => {
+        if (firstHeader) {
+          header.push(dk.name);
+        }
+        data.forEach(dt => {
+          if (dt.dataKey.name === dk.name && dt.datasource.name === ds.entityName) {
+            entity.push([dk.name, _.flatMap(dt.data, (arr) => arr[1])]);
+            if ((dt.data[0] && dt.data[0][0]) && firstTs) {
+              firstTs = false;
+              entity.splice(0, 0, ['timestamp', _.flatMap(dt.data, (arr) => arr[0].toString())]);
+            }
+          }
+        });
+      });
+      firstHeader = false;
+      aggregation.push([ds.entityName, ds.entityType, entity]);
+    });
+    // console.log(aggregation);
+    let result = [];
+    aggregation.forEach((item, i) => {
+      let entityName = item[0];
+      let entityType = item[1];
+      let v = item[2];
+      //处理没有数据的情况
+      const dataKeyData = v.filter(item => item[1].length > 0)[0]
+      if(dataKeyData){
+        for (let i = 0; i < dataKeyData[1].length; i++) {
+          let row = [];
+          v.forEach((_item, j) => {
+            if (j == 0) {
+              row[0] = _item[1][i];
+              row[1] = entityName;
+              row[2] = entityType;
+            } else {
+              row[j + 2] = _item[1][i] ? _item[1][i] : '';
+            }
+          });
+          result.push(row);
+        }
+      }
+    });
+    result.splice(0, 0, header);
+    // console.log(result);
+    return result;
+  }
+
+  //数据导出到浏览器下载
+  export(data: Array<any>, fileType: BookType, title: string): void {
+    const ws: WorkSheet = utils.aoa_to_sheet(data);
+    ws['!cols'] = ([
+      { wch: 13 }
+    ]);
+    const output_file_name = title + '-' + Date.parse(new Date().toString()) + '.' + fileType;
+    if (fileType === 'csv') {
+      const csv = utils.sheet_to_csv(ws, { FS: ';', RS: '\n' });
+      this.export_csv(csv, output_file_name);
+    } else {
+      const wb: WorkBook = utils.book_new();
+      utils.book_append_sheet(wb, ws, 'Sheet1');
+      writeFile(wb, output_file_name, { bookType: fileType, type: 'array'});
+    }
+  }
+
+//导出csv
+  export_csv(data, fileName) {
+    const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(data);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = uri;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 }

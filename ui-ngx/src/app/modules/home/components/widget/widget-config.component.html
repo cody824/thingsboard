@@ -156,6 +156,10 @@
         <mat-slide-toggle class="mat-slide slide-block" formControlName="enableFullscreen">
           {{ 'widget-config.enable-fullscreen' | translate }}
         </mat-slide-toggle>
+        <!-- 添加数据导出按钮 -->
+        <mat-slide-toggle class="mat-slide slide-block" formControlName="enableDataExport">
+          {{ 'widget-config.enable-data-export' | translate }}
+        </mat-slide-toggle>
       </div>
     </div>
     <div [fxShow]="selectedOption === 'actions'" [formGroup]="actionsSettings" class="mat-content" style="height: 100%;">

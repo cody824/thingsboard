@@ -3987,7 +3987,11 @@
         "search": "搜索部件",
         "filter": "部件类型过滤",
         "loading-widgets": "加载部件...",
-        "widget-template-error": "无效的部件 HTML 模板。"
+        "widget-template-error": "无效的部件 HTML 模板。",
+        "data-export": "导出数据",
+        "data-export-csv": "数据导出为CSV格式",
+        "data-export-xls": "数据导出为XLS格式",
+        "data-export-xlsx": "数据导出为XLSX格式"
     },
     "widget-action": {
         "header-button": "部件顶部按钮",
@@ -4144,7 +4148,8 @@
         "data-settings": "数据设置",
         "no-data-display-message": "\"没有数据可显示\" 替代信息",
         "data-page-size": "每个数据源的最大实体数",
-        "settings-component-not-found": "未找到设置的表单组件选择器 '{{selector}}'"
+        "settings-component-not-found": "未找到设置的表单组件选择器 '{{selector}}'",
+        "enable-data-export": "启用数据导出"
     },
     "widget-type": {
         "import": "导入部件类型",
