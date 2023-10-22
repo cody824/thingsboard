@@ -45,31 +45,6 @@
     </fileSets>
 
     <files>
-        <file>
-            <source>${pkg.win.dist}/bin/${pkg.name}.exe</source>
-            <outputDirectory>bin</outputDirectory>
-            <destName>${pkg.name}.exe</destName>
-        </file>
-        <file>
-            <source>${pkg.win.dist}/service.exe</source>
-            <outputDirectory/>
-            <destName>${pkg.name}.exe</destName>
-        </file>
-        <file>
-            <source>${pkg.win.dist}/service.xml</source>
-            <outputDirectory/>
-            <destName>${pkg.name}.xml</destName>
-            <lineEnding>windows</lineEnding>
-        </file>
-        <file>
-            <source>${pkg.win.dist}/install.bat</source>
-            <outputDirectory/>
-            <lineEnding>windows</lineEnding>
-        </file>
-        <file>
-            <source>${pkg.win.dist}/uninstall.bat</source>
-            <outputDirectory/>
-            <lineEnding>windows</lineEnding>
-        </file>
+
     </files>
 </assembly>

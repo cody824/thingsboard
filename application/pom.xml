@@ -126,12 +126,6 @@
             <artifactId>edge-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
-            <artifactId>dao</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>io.takari.junit</groupId>
             <artifactId>takari-cpsuite</artifactId>
             <scope>test</scope>
