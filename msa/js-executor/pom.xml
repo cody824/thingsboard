@@ -84,16 +84,6 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>yarn pkg</id>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <arguments>run pkg</arguments>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
