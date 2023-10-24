@@ -282,7 +282,13 @@ export class WidgetContainerComponent extends PageComponent implements OnInit, A
       }
     });
     result.splice(0, 0, header);
-    // console.log(result);
+    const index = result[0].indexOf('timestamp');
+    result = result.map((item, i) => {
+      if (i > 0) {
+        item[index] = new Date(Number(item[index])).toLocaleString();
+      }
+      return item;
+    })
     return result;
   }
 
