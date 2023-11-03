@@ -237,12 +237,13 @@ export class WidgetContainerComponent extends PageComponent implements OnInit, A
     let aggregation = [];
     const header = ['timestamp', 'name', 'type'];
     let firstHeader = true;
+    console.log(datasources);
     datasources.forEach(ds => {
       let entity = [];
       let firstTs = true;
       ds.dataKeys.forEach(dk => {
         if (firstHeader) {
-          header.push(dk.name);
+          header.push(dk.label || dk.name);
         }
         data.forEach(dt => {
           if (dt.dataKey.name === dk.name && dt.datasource.name === ds.entityName) {
