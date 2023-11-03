@@ -237,7 +237,6 @@ export class WidgetContainerComponent extends PageComponent implements OnInit, A
     let aggregation = [];
     const header = ['timestamp', 'name', 'type'];
     let firstHeader = true;
-    console.log(datasources);
     datasources.forEach(ds => {
       let entity = [];
       let firstTs = true;
